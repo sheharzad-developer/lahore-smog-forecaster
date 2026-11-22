@@ -1,4 +1,3 @@
-
 import psycopg
 from fastapi import FastAPI, HTTPException
 from psycopg import Error as PsycopgError
@@ -12,14 +11,16 @@ from database import get_db_connection
 app = FastAPI(
     title="Lahore Smog Forecaster API",
     description="Backend API for Lahore air quality monitoring",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "http://127.0.0.1:5173"
+        "http://127.0.0.1:5173",
+        "http://localhost:4173",
+        "http://127.0.0.1:4173",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -29,17 +30,13 @@ app.add_middleware(
 
 @app.get("/")
 def home():
-    return {
-        "message": "Welcome to Lahore Smog Forecaster API",
-        "status": "running"
-    }
+    return {"message": "Welcome to Lahore Smog Forecaster API", "status": "running"}
 
 
 @app.get("/health")
 def health_check():
-    return {
-        "status": "healthy"
-    }
+    return {"status": "healthy"}
+
 
 STATION_COLUMNS = "id, name, neighbourhood, pm25, status, lat, lng"
 
@@ -82,7 +79,7 @@ def get_stations():
                 "pm25": row[3],
                 "status": row[4],
                 "lat": row[5],
-                "lng": row[6]
+                "lng": row[6],
             }
             for row in rows
         ]
@@ -90,13 +87,12 @@ def get_stations():
         return {
             "data_type": "database",
             "count": len(stations_data),
-            "stations": stations_data
+            "stations": stations_data,
         }
 
     except PsycopgError:
         raise HTTPException(
-            status_code=503,
-            detail="Database is temporarily unavailable."
+            status_code=503, detail="Database is temporarily unavailable."
         )
 
 
@@ -123,57 +119,54 @@ def get_summary():
             "total_stations": row[0],
             "online_stations": row[1],
             "offline_stations": row[2],
-            "average_pm25": float(row[3])
+            "average_pm25": float(row[3]),
         }
 
     except PsycopgError:
         raise HTTPException(
-            status_code=503,
-            detail="Database is temporarily unavailable."
+            status_code=503, detail="Database is temporarily unavailable."
         )
+
 
 @app.get("/api/history/{time_range}", response_model=HistoryResponse)
 def get_history(time_range: str):
     if time_range not in ["weekly", "monthly", "yearly"]:
         raise HTTPException(
             status_code=400,
-            detail="Invalid time range. Use weekly, monthly, or yearly."
+            detail="Invalid time range. Use weekly, monthly, or yearly.",
         )
 
     try:
         with get_db_connection() as connection:
             cursor = connection.cursor()
 
-            cursor.execute("""
+            cursor.execute(
+                """
                 SELECT label, pm25
                 FROM historical_readings
                 WHERE time_range = %s
                 ORDER BY id;
-            """, (time_range,))
+            """,
+                (time_range,),
+            )
 
             rows = cursor.fetchall()
             cursor.close()
 
-        readings = [
-            {
-                "day": row[0],
-                "pm25": row[1]
-            }
-            for row in rows
-        ]
+        readings = [{"day": row[0], "pm25": row[1]} for row in rows]
 
         return {
             "data_type": "database",
             "time_range": time_range,
             "count": len(readings),
-            "readings": readings
+            "readings": readings,
         }
 
     except PsycopgError:
         raise HTTPException(
-            status_code=503,
-            detail="Database is temporarily unavailable."
+            status_code=503, detail="Database is temporarily unavailable."
         )
+
 
 @app.get("/api/stations")
 def get_stations():
@@ -197,7 +190,7 @@ def get_stations():
             "pm25": row[3],
             "status": row[4],
             "lat": row[5],
-            "lng": row[6]
+            "lng": row[6],
         }
         for row in rows
     ]
@@ -205,5 +198,5 @@ def get_stations():
     return {
         "data_type": "database",
         "count": len(stations_data),
-        "stations": stations_data
+        "stations": stations_data,
     }
