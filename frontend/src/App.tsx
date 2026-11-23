@@ -1,14 +1,18 @@
+
+import { lazy, Suspense } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
 
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
-import Overview from "./pages/Overview";
-import Monitoring from "./pages/Monitoring";
-import LahoreMap from "./pages/LahoreMap";
-import History from "./pages/History";
-import About from "./pages/About";
 
 import "./App.css";
+
+// Load pages only when users visit their routes
+const Overview = lazy(() => import("./pages/Overview"));
+const Monitoring = lazy(() => import("./pages/Monitoring"));
+const LahoreMap = lazy(() => import("./pages/LahoreMap"));
+const History = lazy(() => import("./pages/History"));
+const About = lazy(() => import("./pages/About"));
 
 const AppLayout = () => {
   return (
@@ -25,21 +29,17 @@ const AppLayout = () => {
 
 function App() {
   return (
-    <Routes>
-      <Route element={<AppLayout />}>
-        <Route path="/" element={<Overview />} />
-
-        <Route path="/history" element={<History />} />
-
-        <Route path="/about" element={<About />} />
-        
-        <Route path="/monitoring" element={<Monitoring />} />
-
-        <Route path="/map" element={<LahoreMap />} />
-
-       
-      </Route>
-    </Routes>
+    <Suspense fallback={<div className="page-loading">Loading page...</div>}>
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<Overview />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/monitoring" element={<Monitoring />} />
+          <Route path="/map" element={<LahoreMap />} />
+        </Route>
+      </Routes>
+    </Suspense>
   );
 }
 
