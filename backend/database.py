@@ -20,7 +20,8 @@ def get_db_connection() -> psycopg.Connection:
         raise RuntimeError(
             "DATABASE_URL is not set. Add it to backend/.env."
         )
-    return psycopg.connect(DATABASE_URL)
+    # Fail fast instead of hanging if PostgreSQL is unreachable.
+    return psycopg.connect(DATABASE_URL, connect_timeout=5)
 
 
 # Older name, still used by test_db.py.

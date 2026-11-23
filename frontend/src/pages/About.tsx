@@ -16,7 +16,7 @@ const About = () => {
           <li>Monitor PM2.5 pollution levels.</li>
           <li>Visualize air quality across Lahore.</li>
           <li>Explore historical pollution trends.</li>
-          <li>Eventually forecast future air quality.</li>
+          <li>Develop machine learning models to forecast future air quality.</li>
         </ul>
       </section>
 
@@ -25,11 +25,22 @@ const About = () => {
         <div className="technology-list">
           <span>React</span>
           <span>TypeScript</span>
-          <span>FastAPI (planned)</span>
-          <span>PostgreSQL (planned)</span>
+          <span>FastAPI</span>
+          <span>PostgreSQL</span>
+          <span>Python</span>
           <span>Recharts</span>
           <span>Leaflet</span>
         </div>
+      </section>
+
+      <section>
+        <h3>Current Development Status</h3>
+        <p>
+          The full-stack monitoring application is implemented
+          with a React frontend, FastAPI backend, and PostgreSQL
+          database. Machine learning forecasting and automated
+          data integration are planned for future development.
+        </p>
       </section>
 
       <section>
@@ -37,7 +48,8 @@ const About = () => {
         <p>
           The current application uses illustrative sample
           data for demonstration purposes. It does not
-          display live environmental measurements.
+          display live environmental measurements or actual
+          historical pollution records.
         </p>
       </section>
     </div>

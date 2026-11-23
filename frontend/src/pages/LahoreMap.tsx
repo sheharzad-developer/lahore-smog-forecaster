@@ -1,7 +1,11 @@
+
 import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
-import { useEffect, useState } from "react";
-import api from "../services/api";
+import { useCallback, useEffect, useState } from "react";
+
+import api, { getApiErrorMessage } from "../services/api";
 import type { Station } from "../types/station";
+import ErrorMessage from "../components/ErrorMessage";
+
 import "leaflet/dist/leaflet.css";
 
 const LahoreMap = () => {
@@ -9,28 +13,40 @@ const LahoreMap = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadStations = useCallback(() => {
+    setLoading(true);
+    setError(null);
+
     api
-      .get("/api/stations")
+      .get<{ stations: Station[] }>("/api/stations")
       .then((response) => {
         setStations(response.data.stations);
       })
       .catch((err) => {
-        setError("Failed to load map stations.");
-        console.error(err);
+        console.error("Map stations API error:", err);
+        setError(getApiErrorMessage(err));
       })
       .finally(() => {
         setLoading(false);
       });
   }, []);
 
+  useEffect(() => {
+    loadStations();
+  }, [loadStations]);
+
   if (loading) {
     return <div className="map-page">Loading map stations...</div>;
   }
 
   if (error) {
-    return <div className="map-page">{error}</div>;
+    return (
+      <div className="map-page">
+        <ErrorMessage message={error} onRetry={loadStations} />
+      </div>
+    );
   }
+
   return (
     <div className="map-page">
       <h2>Lahore Air Quality Map</h2>

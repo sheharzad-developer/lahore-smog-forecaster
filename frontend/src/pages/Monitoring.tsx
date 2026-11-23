@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import StationTable from "../components/StationTable";
-import api from "../services/api";
+import api, { getApiErrorMessage } from "../services/api";
+import ErrorMessage from "../components/ErrorMessage";
 import type { Station } from "../types/station";
 
 const Monitoring = () => {
@@ -55,27 +56,38 @@ const Monitoring = () => {
     startIndex + stationsPerPage,
   );
 
-  useEffect(() => {
+  const loadStations = useCallback(() => {
+    setLoading(true);
+    setError(null);
+
     api
       .get<{ stations: Station[] }>("/api/stations")
       .then((response) => {
         setStations(response.data.stations);
       })
       .catch((err) => {
-        setError("Failed to load stations from API.");
-        console.error(err);
+        console.error("Stations API error:", err);
+        setError(getApiErrorMessage(err));
       })
       .finally(() => {
         setLoading(false);
       });
   }, []);
 
+  useEffect(() => {
+    loadStations();
+  }, [loadStations]);
+
   if (loading) {
     return <div className="monitoring-page">Loading stations...</div>;
   }
 
   if (error) {
-    return <div className="monitoring-page">{error}</div>;
+    return (
+      <div className="monitoring-page">
+        <ErrorMessage message={error} onRetry={loadStations} />
+      </div>
+    );
   }
 
   return (

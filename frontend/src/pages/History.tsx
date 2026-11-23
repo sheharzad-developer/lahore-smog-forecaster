@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -10,7 +10,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import api from "../services/api";
+import api, { getApiErrorMessage } from "../services/api";
+import ErrorMessage from "../components/ErrorMessage";
 
 interface HistoryReading {
   day: string;
@@ -25,23 +26,27 @@ const History = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadHistory = useCallback(() => {
     setLoading(true);
     setError(null);
 
     api
-      .get(`/api/history/${range}`)
+      .get<{ readings: HistoryReading[] }>(`/api/history/${range}`)
       .then((response) => {
         setChartData(response.data.readings);
       })
       .catch((err) => {
         console.error("History API error:", err);
-        setError("Failed to load historical data.");
+        setError(getApiErrorMessage(err));
       })
       .finally(() => {
         setLoading(false);
       });
   }, [range]);
+
+  useEffect(() => {
+    loadHistory();
+  }, [loadHistory]);
 
   const averagePM25 = chartData.length
     ? Math.round(
@@ -103,7 +108,9 @@ const History = () => {
 
       {loading && <p>Loading historical data...</p>}
 
-      {error && <p>{error}</p>}
+      {error && (
+        <ErrorMessage message={error} onRetry={loadHistory} />
+      )}
 
       {!loading && !error && (
         <>

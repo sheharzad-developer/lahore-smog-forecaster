@@ -946,3 +946,54 @@
   font-size: 13px;
   font-weight: 600;
 }
+
+/* API error message with retry */
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 14px 16px;
+  margin: 16px 0;
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+}
+
+.error-message svg {
+  flex-shrink: 0;
+}
+
+.error-message p {
+  flex: 1 1 200px;
+  margin: 0;
+  font-size: 14px;
+  color: inherit;
+}
+
+.retry-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: #b91c1c;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.retry-button:hover {
+  background: #991b1b;
+}
+
+.retry-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.3);
+}
