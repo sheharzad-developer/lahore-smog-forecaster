@@ -9,6 +9,11 @@ from database import get_db_connection
 from errors import register_error_handlers
 from schemas import HistoryResponse, StationsResponse, SummaryResponse
 
+from pathlib import Path
+import pandas as pd
+
+from services.prediction_service import prepare_latest_features, predict
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(name)s: %(message)s",
@@ -153,4 +158,46 @@ def get_history(time_range: str):
         "time_range": time_range,
         "count": len(readings),
         "readings": readings,
+    }
+
+@app.get("/api/forecast")
+def get_forecast():
+    """Generate 24h, 48h and 72h PM2.5 forecasts for Gulberg."""
+
+    project_root = Path(__file__).resolve().parents[1]
+    data_path = project_root / "ml" / "data" / "raw" / "gulberg_pm25_latest.csv"
+
+    if not data_path.exists():
+        raise HTTPException(
+            status_code=503,
+            detail="Latest air quality data is unavailable.",
+        )
+
+    readings = pd.read_csv(data_path)
+
+    # Stale, incomplete or invalid readings are a data problem, not a
+    # server bug: return 503 with the reason so the dashboard can show it.
+    try:
+        features, latest_timestamp = prepare_latest_features(readings)
+    except ValueError as exc:
+        logging.getLogger("lahore_api").warning("Forecast unavailable: %s", exc)
+        raise HTTPException(
+            status_code=503,
+            detail=f"Forecast unavailable: {exc}",
+        ) from exc
+
+    predictions = predict(features)
+
+    return {
+        "station": "Gulberg III",
+        "latest_reading": latest_timestamp.isoformat(),
+        "current_pm25": float(features.iloc[0]["pm25"]),
+        "unit": "µg/m³",
+        "forecasts": {
+            "24h": round(predictions["24h"], 2),
+            "48h": round(predictions["48h"], 2),
+            "72h": round(predictions["72h"], 2),
+        },
+        "data_source": "OpenAQ",
+        "model": "HistGradientBoostingRegressor",
     }

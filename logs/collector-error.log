@@ -1,0 +1,69 @@
+2026-11-26 01:42:31,818 ERROR OpenAQ data collection failed
+Traceback (most recent call last):
+  File "/Users/sheharzad/Desktop/lahore-smog-forecaster/ml/src/fetch_latest_data.py", line 98, in <module>
+    fetch_latest_data()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/sheharzad/Desktop/lahore-smog-forecaster/ml/src/fetch_latest_data.py", line 56, in fetch_latest_data
+    raise requests.exceptions.ConnectionError(
+        "TEST: Simulated OpenAQ connection failure"
+    )
+requests.exceptions.ConnectionError: TEST: Simulated OpenAQ connection failure
+2026-11-27 02:39:26,850 ERROR OpenAQ data collection failed
+Traceback (most recent call last):
+  File "/Users/sheharzad/Desktop/lahore-smog-forecaster/ml/src/fetch_latest_data.py", line 122, in <module>
+    fetch_latest_data()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/sheharzad/Desktop/lahore-smog-forecaster/ml/src/fetch_latest_data.py", line 81, in fetch_latest_data
+    raise ValueError(
+    ...<3 lines>...
+    )
+ValueError: OpenAQ returned stale data. Latest reading is 11.7 hours old. Maximum allowed age: 6 hours.
+2026-11-27 02:52:32,683 ERROR OpenAQ data collection failed
+Traceback (most recent call last):
+  File "/Users/sheharzad/Desktop/lahore-smog-forecaster/ml/src/fetch_latest_data.py", line 122, in <module>
+    fetch_latest_data()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/sheharzad/Desktop/lahore-smog-forecaster/ml/src/fetch_latest_data.py", line 81, in fetch_latest_data
+    raise ValueError(
+    ...<3 lines>...
+    )
+ValueError: OpenAQ returned stale data. Latest reading is 11.9 hours old. Maximum allowed age: 6 hours.
+Traceback (most recent call last):
+  File "/Users/sheharzad/Desktop/lahore-smog-forecaster/ml/src/fetch_latest_data.py", line 122, in <module>
+    fetch_latest_data()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/sheharzad/Desktop/lahore-smog-forecaster/ml/src/fetch_latest_data.py", line 81, in fetch_latest_data
+    raise ValueError(
+    ...<3 lines>...
+    )
+ValueError: OpenAQ returned stale data. Latest reading is 11.9 hours old. Maximum allowed age: 6 hours.
+2026-11-27 03:04:18,024 ERROR OpenAQ data collection failed
+Traceback (most recent call last):
+  File "/Users/sheharzad/Desktop/lahore-smog-forecaster/ml/src/fetch_latest_data.py", line 123, in <module>
+    fetch_latest_data()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/sheharzad/Desktop/lahore-smog-forecaster/ml/src/fetch_latest_data.py", line 82, in fetch_latest_data
+    raise ValueError(
+    ...<3 lines>...
+    )
+ValueError: OpenAQ returned stale data. Latest reading is 12.1 hours old. Maximum allowed age: 6 hours.
+2026-11-27 03:05:44,224 ERROR OpenAQ data collection failed
+Traceback (most recent call last):
+  File "/Users/sheharzad/Desktop/lahore-smog-forecaster/ml/src/fetch_latest_data.py", line 127, in <module>
+    fetch_latest_data()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/sheharzad/Desktop/lahore-smog-forecaster/ml/src/fetch_latest_data.py", line 86, in fetch_latest_data
+    raise ValueError(
+    ...<3 lines>...
+    )
+ValueError: OpenAQ returned stale data. Latest reading is 12.1 hours old. Maximum allowed age: 6 hours.
+2026-11-27 03:19:49,828 ERROR OpenAQ data collection failed
+Traceback (most recent call last):
+  File "/Users/sheharzad/Desktop/lahore-smog-forecaster/ml/src/fetch_latest_data.py", line 127, in <module>
+    fetch_latest_data()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/sheharzad/Desktop/lahore-smog-forecaster/ml/src/fetch_latest_data.py", line 86, in fetch_latest_data
+    raise ValueError(
+    ...<3 lines>...
+    )
+ValueError: OpenAQ returned stale data. Latest reading is 12.3 hours old. Maximum allowed age: 6 hours.

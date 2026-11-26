@@ -60,4 +60,24 @@ export function getApiErrorMessage(error: unknown): string {
   }
 }
 
+
+export interface ForecastResponse {
+  station: string;
+  latest_reading: string;
+  current_pm25: number;
+  unit: string;
+  forecasts: {
+    "24h": number;
+    "48h": number;
+    "72h": number;
+  };
+  data_source: string;
+  model: string;
+}
+
+export async function getForecast(): Promise<ForecastResponse> {
+  const response = await api.get<ForecastResponse>("/api/forecast");
+  return response.data;
+}
+
 export default api;

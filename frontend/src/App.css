@@ -997,3 +997,154 @@
   outline: none;
   box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.3);
 }
+
+/* AI Forecast Section */
+
+.forecast-section {
+  margin-top: 25px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.section-header h2 {
+  font-size: 20px;
+  color: #172b4d;
+  margin-bottom: 6px;
+}
+
+.section-header p {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.section-header button {
+  padding: 10px 16px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.section-header button:hover {
+  background: #1d4ed8;
+}
+
+.section-header button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.forecast-current {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+}
+
+.forecast-current span {
+  color: #1e40af;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.forecast-current strong {
+  color: #172b4d;
+  font-size: 30px;
+}
+
+.forecast-current small {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.forecast-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.forecast-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+}
+
+.forecast-card span {
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.forecast-card strong {
+  color: #172b4d;
+  font-size: 28px;
+}
+
+.forecast-card small {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.forecast-disclaimer {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Forecast responsive layout */
+
+@media (max-width: 768px) {
+  .forecast-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .forecast-section {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .forecast-card {
+    padding: 18px;
+  }
+
+  .forecast-current strong {
+    font-size: 26px;
+  }
+}
